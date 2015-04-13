@@ -1,0 +1,43 @@
+#!/bin/bash
+#put in /usr/bin/cbsearch and make it 755
+if [ $1 == '-a' ]; then
+    SEARCH_STRING="$2"
+    SEARCH_PATH="/var/www/api"
+elif [ $1 == '-m' ]; then
+    SEARCH_STRING="$2"
+    SEARCH_PATH="/var/www/mobile"
+elif [ $1 == '-p' ]; then
+    SEARCH_STRING="$2"
+    SEARCH_PATH="/var/www/propane"
+elif [ $1 == '-w' ]; then
+    SEARCH_STRING="$2"
+    SEARCH_PATH="/var/www/workers"
+elif [ $1 == '-t' ]; then
+    SEARCH_STRING="$2"
+    SEARCH_PATH="/var/www/tres"
+else
+    SEARCH_STRING="$1"
+    SEARCH_PATH=`pwd`
+fi
+
+echo; echo
+echo "############################################################"
+echo "#                                                          #"
+echo "#    SEARCH RESULTS:                                       #"
+printf "#    %-50s    #\n" "Path:     $SEARCH_PATH"
+printf "#    %-50s    #\n" "Criteria: $SEARCH_STRING"
+echo "#                                                          #"
+echo "############################################################"
+echo
+
+egrep -n -R \
+    --exclude ".git*"\
+    --exclude ".svn"\
+    --exclude-dir ".git"\
+    --exclude-dir "logs"\
+    --exclude-dir "data"\
+    --color=auto\
+    "$SEARCH_STRING" .
+RETVAL=$?
+echo
+exit $RETVAL
